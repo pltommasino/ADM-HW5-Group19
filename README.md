@@ -8,7 +8,7 @@ This project was carried out by Group 19 of Algorithmic Methods for Data Mining,
 | --- | --- |
 | Pasquale Luca Tommasino | pl.tommasino@gmail.com | 
 | Deniz Yilmaz | denizyilmazz@yahoo.com |
-| | |
+| Emmanuele De Lucia | delucia.2099678@studenti.uniroma1.it |
 | | |
 
 
