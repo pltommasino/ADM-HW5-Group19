@@ -18,6 +18,8 @@ All the points of the project are contained in a single main file called `HW5_ma
 
 ### 1. Data
 
+In this part, we build the two graph: *Citation graph* and *Collaboration graph*. For this, we created a file (`function.py`) which contained all the functions that allowed us to transform the dataset from *.json* to *dictionary*.
+
 ### 2. Controlling system
 
 #### 2.1 Backend Implementation
