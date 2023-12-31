@@ -24,6 +24,8 @@ In this part, we build the two graph: *Citation graph* and *Collaboration graph*
 
 #### 2.1 Backend Implementation
 
+We created a new file (`backend.py`) for define all the Functionalities function, and then we import all the function in their respective section.
+
 #### 2.2. Frontend Implementation
 
 ### 3. Bonus - PageRank on MapReduce
