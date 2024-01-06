@@ -69,17 +69,13 @@ def Dijkstra(graph, node_start, node_plusone):
     dist = []
     visited = []
     nodes = []
-    ###---
-    predecessor = []  # Inizializza tutti i predecessori a -1
-    ###---
+    predecessor = []
 
     for i in range(n):
         dist.append(float('inf'))
         visited.append(False)
         nodes.append(list(graph.nodes)[i])
-        ###---
         predecessor.append([])
-        ###---
 
     dist[nodes.index(node_start)] = 0
 
@@ -106,7 +102,8 @@ def functionality_3(graph, sequence_authors, node_first, node_last, N):
     - N: denoting the top N authors whose data should be considered
 
     Output:
-    - shortest_walk: The shortest walk of collaborations you need to read to get from author a_1 to author a_n
+    - total_shortest_walk: The shortest walk of collaborations you need to read to get from author a_1 to author a_n
+    - path: The path of the shortest walk
     - papers: The papers you need to cross to realize this walk.
     '''
 
