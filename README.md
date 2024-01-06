@@ -18,17 +18,15 @@ All the points of the project are contained in a single main file called `HW5_ma
 
 ### 1. Data
 
-In this part, we build the two graph: *Citation graph* and *Collaboration graph*. For this, we created a file (`function.py`) which contained all the functions that allowed us to transform the dataset from *.json* to *dictionary*.
+In this part, we build the two graph: *Citation graph* and *Collaboration graph*. For this, we created a file (`dictionary.py` in the path `dict/`) which contained all the functions that allowed us to transform the dataset from *.json* to *dictionary*.
 
 ### 2. Controlling system
 
 #### 2.1 Backend Implementation
 
-We created a new file (`backend.py`) for define all the Functionalities function, and then we import all the function in their respective section.
+In `funct/` path, we create five files (`functionality1.py`, `functionality2.py`, `functionality3.py`, `functionality4.py`, `functionality5.py`) for define all the Functionalities function, and then we import all the function in their respective section in the main file.
 
 #### 2.2. Frontend Implementation
-
-### 3. Bonus - PageRank on MapReduce
 
 ### 4. Command Line Question (CLQ)
 

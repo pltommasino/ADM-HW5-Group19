@@ -1,3 +1,5 @@
 .DS_Store
 dblp.v12.json
 __pycache__/
+citation_graph.txt
+collaboration_graph.txt
