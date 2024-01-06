@@ -161,7 +161,14 @@ def functionality_3(graph, sequence_authors, node_first, node_last, N):
 
     weight = [i[0] for i in shortest_walk]
 
+    total_shortest_walk = 0
+    path = []
+
+    for (i,j) in shortest_walk:
+        total_shortest_walk = i + total_shortest_walk
+        path.append(j)
+
     if float('inf') in weight:
         return 'It is not possible to calculate a path'
     else:
-        return shortest_walk
+        return total_shortest_walk, path
