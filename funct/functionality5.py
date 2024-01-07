@@ -1,7 +1,8 @@
 import networkx as nx
 
 def functionality_5(graph, p1, p2):
-    #We need an undirected graph
+
+    #We need a copy
     graph_copy = graph.to_undirected()
 
     if nx.number_connected_components(graph_copy) > 1:

@@ -1,28 +1,52 @@
 import random
 import networkx as nx
 
-def functionality_4(graph, start, target):
-    #auxiliar lists that allows us to save the neighbor for the starter node and for the target node
-    start_nb = []
-    target_nb = []
-    #need a copy because later 1 need the original graph in order to bulld the subgraph and computing the numb
-    graph_copy = graph.copy()
-    while len(graph_copy) > 2: # iterate till there are just 2 nodes
-        # pick randomly between the start and the target
-        v = random.choice([start, target])
-        # the other node to use in the contraction is in the neighborhood of v but cant be neither the start or t.
-        w = random.choice(list(graph_copy.neighbors(v)))
-        if w == start or w == target:
+def functionality_4(graph, start, target, N):
+
+    #Subgraph of first N authors
+    degrees_for_topN = dict(graph.degree())
+    topN_auth_2 = sorted(degrees_for_topN.items(), key=lambda x:x[1], reverse=True)[:N]
+    topN_auth = [i[0] for i in topN_auth_2]
+    Nauthors_graph = graph.subgraph(topN_auth)
+
+    #We take two random author... if 'start' and 'target' are = 0
+    if start==0 and target==0:
+        n=2
+        subsample = random.sample(list(Nauthors_graph.nodes), n)
+        start = subsample[0]
+        target = subsample[1]
+
+    #Initialite lists to save neighbors
+    neigh_start = []
+    neigh_target = []
+
+    #We copy the graph
+    graph_copy = Nauthors_graph.copy()
+
+    #Till there are just two nodes...
+    while len(graph_copy) > 2:
+
+        #Random choice between start and target
+        choice1 = random.choice([start, target])
+        #Other node to use in the contraction is in the neighborhood of v...
+        choice2 = random.choice(list(graph_copy.neighbors(choice1)))
+
+        #...if 'choice2' is equal to 'start' or 'target' >>> continue
+        if choice2 == start or choice2 == target:
             continue
-        graph_copy = nx.contracted_edge(graph_copy,(v, w))
-        #if we are contracting with respect to the start node we will add w to start_nb, otherwise it'11 be adde
-        if v == start:
-            start_nb.append(w)
+
+        graph_copy = nx.contracted_edge(graph_copy,(choice1, choice2))
+
+        #...If we are contracting with respect to the start node we will add 'choice2' to 'neigh_start'...
+        if choice1 == start:
+            neigh_start.append(choice2)
+        #... Otherwise it'll be add to 'neigh_target'
         else:
-            target_nb.append(w)
-    #create the subgraph starting from the original graph and from the arrays containing the neighbors
-    subgraph_start = nx.subgraph(graph, start_nb + [start])
-    subgraph_target = nx.subgraph(graph, target_nb + [target])
-    removed_edges = len(graph.edges) - len(subgraph_start.edges) - len (subgraph_target.edges) 
+            neigh_target.append(choice2)
+
+    #Create subgraph from original graph and from the arrays containing the neighbors
+    start_subgraph = nx.subgraph(Nauthors_graph, neigh_start + [start])
+    target_subgraph = nx.subgraph(Nauthors_graph, neigh_target + [target])
+    removed_edges = len(Nauthors_graph.edges) - len(start_subgraph.edges) - len (target_subgraph.edges) 
     
     return removed_edges
