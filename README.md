@@ -36,9 +36,9 @@ In this part, the following 3 command line questions are answered using the AWS 
 2)How does the degree of citation vary among the graph nodes?
 3)What is the average length of the shortest path among nodes?
 
-CommandLine.sh: This file contains the code for commandline question.
+`CommandLine.sh`: This file contains the code for commandline question.
 
-CLQ_screenshots: This folder contains screenshots of running command-line scripts to three CLQ questions individually. 
+`CLQ_screenshots`: This folder contains screenshots of running command-line scripts to three CLQ questions individually. 
 
 
 ### 5. Algorithmic Questions (AQ)
