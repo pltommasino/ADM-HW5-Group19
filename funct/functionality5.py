@@ -1,38 +1,54 @@
 import networkx as nx
 
-def functionality_5(graph, p1, p2):
-
-    #We need a copy
-    graph_copy = graph.to_undirected()
-
-    if nx.number_connected_components(graph_copy) > 1:
-        print("The graph is not full connected!")
-        return 0, [], False
+def functionality_5(graph, paper1, paper2, N):
     
-    #Calculate the initial number of edges
-    num_edges_start = graph_copy.number_of_edges()
+    #Subgraph of first N authors
+    degrees = dict(graph.degree())
+    N_authors = sorted(degrees.items(), key=lambda x: x[1], reverse=True)[:N]
+    N_authors_id = [el[0] for el in N_authors]
+    subgraph = graph.subgraph(N_authors_id)
 
-    #Calculate betweenness centrality for each edge
-    edge_betweenness = nx.edge_betweenness_centrality(graph_copy)
+    #From subgraph extract edge betweenness centrality
+    G_dict = nx.edge_betweenness_centrality(subgraph)
+    edge = ()
 
-    # Sort edges by betweenness centrality in descending order
-    sorted_edges = sorted(edge_betweenness.items(), key=lambda x: x[1], reverse=True)
+    #Extract the edge lenght with the highest edge betweenness centrality score
+    for key, value in sorted(G_dict.items(), key=lambda item: item[1], reverse=True):
+        edge = key
+        break
+    number_of_edges = len(edge)
 
-    #Remove edges until the graph has more than one connected component 
-    while nx.number_connected_components(graph_copy) ==1:
-        edge_to_remove = sorted_edges.pop(0)[0]
-        graph_copy.remove_edge(*edge_to_remove)
+    # Find the number of connected components
+    conn_comp = nx.connected_components(subgraph)
+    conn_comp_count = nx.number_connected_components(subgraph)
+
+    # Continue removing edges until the graph is divided into multiple connected components
+    while conn_comp_count == 1:
+
+        #From subgraph.copy() extract edge betweenness centrality
+        G_dict = nx.edge_betweenness_centrality(subgraph.copy())
+        edge = ()
+
+        # Extract the edge with the highest edge betweenness centrality score
+        for key, value in sorted(G_dict.items(), key=lambda item: item[1], reverse=True):
+            edge = key
+            break
+
+        graph.remove_edge(edge[0], edge[1])
+        conn_comp = nx.connected_components(subgraph.copy())
+        conn_comp_count = nx.number_connected_components(subgraph.copy())
+
+    #Find the nodes forming the communities
+    communities = []
+
+    for i in conn_comp:
+        communities.append(list(i))
+
+    for community in communities:
+        if paper1 in community and paper2 in community:
+            same_c = True
+            break
+        else:
+            same_c = False
     
-    #Find connected components as communities
-    communities = list(nx.connected_components(graph_copy))
-
-    # Check if Paper_1 and Paper_2 belong to the same community
-    same_community = any({p1,p2} <= community for community in communities)
-
-    #Calculate the minimum number of edges removed
-    num_edges_end = graph_copy.number_of_edges()
-
-    diff = num_edges_start-num_edges_end
-
-    # Calculate the minimum number of edges removed
-    return num_edges_start-num_edges_end, diff, communities, same_community, graph_copy
+    return number_of_edges, communities, same_c
