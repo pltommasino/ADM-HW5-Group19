@@ -1,4 +1,5 @@
-import networkx as nx   
+import networkx as nx
+import random
 
 def functionality_2(graph, node_selected, name_graph):
     '''
@@ -14,8 +15,8 @@ def functionality_2(graph, node_selected, name_graph):
         - ClosenessCentrality
         - DegreeCentrality
     '''
-    #Name graph
-    #print("The name of graph selected is: " + name_graph)
+    if node_selected == 0:
+        node_selected = random.sample(list(graph.nodes), 1)[0]
 
     #Betweenness Centrality
     betw2 = nx.betweenness_centrality(graph)

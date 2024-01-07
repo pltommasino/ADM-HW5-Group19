@@ -47,7 +47,8 @@ def getAdjacents(graph, node):
 
     auth = [i for i in graph[node]]
     weight_auth = [graph[node][i]['weight'] for i in auth]
-    nod_adj = list(zip(auth, weight_auth))
+    name_edges_auth = [graph[node][i]['titles'] for i in auth]
+    nod_adj = list(zip(auth, weight_auth, name_edges_auth))
 
     for j in range(len(nod_adj)):
         if weight_auth[j] != float('inf'):
@@ -70,12 +71,14 @@ def Dijkstra(graph, node_start, node_plusone):
     visited = []
     nodes = []
     predecessor = []
+    name_edges = []
 
     for i in range(n):
         dist.append(float('inf'))
         visited.append(False)
         nodes.append(list(graph.nodes)[i])
         predecessor.append([])
+        name_edges.append([])
 
     dist[nodes.index(node_start)] = 0
 
@@ -83,13 +86,14 @@ def Dijkstra(graph, node_start, node_plusone):
         next = NextNode(dist, visited, nodes)
         visited[nodes.index(next)] = True
         V = getAdjacents(graph, next)
-        for [z, w] in V:
+        for [z, w, name] in V:
             d = dist[nodes.index(next)] + w
             if dist[nodes.index(z)] > d:
                 dist[nodes.index(z)] = d
                 predecessor[nodes.index(z)].append(next)
+                name_edges[nodes.index(z)].append(name)
     
-    return dist[nodes.index(node_plusone)], node_plusone
+    return dist[nodes.index(node_plusone)], node_plusone, name_edges[nodes.index(node_plusone)]
     
 
 def functionality_3(graph, sequence_authors, node_first, node_last, N):
@@ -138,34 +142,47 @@ def functionality_3(graph, sequence_authors, node_first, node_last, N):
     shortest_walk = []
 
     #First node have 0 distance from itself
-    shortest_walk.append((0,node_first))
+    shortest_walk.append((0,node_first, []))
 
     # shortest path between starting node and first node in the sequence
-    dist1, predecessor1 = Dijkstra(Nauthors_graph, node_first, sequence_authors[0])
+    dist1, predecessor1, name_edges1 = Dijkstra(Nauthors_graph, node_first, sequence_authors[0])
     # add to total path (without repeating starting node)
-    shortest_walk.append((dist1, predecessor1))
+    shortest_walk.append((dist1, predecessor1, name_edges1))
 
     # for each node in the sequence
     # find shortest path between that node and the following node in the sequence
     for p in range((len(sequence_authors)-1)):
-      dist_s, predecessor_s = Dijkstra(Nauthors_graph, sequence_authors[p], sequence_authors[p+1])
+      dist_s, predecessor_s, name_edges_s = Dijkstra(Nauthors_graph, sequence_authors[p], sequence_authors[p+1])
       # add path to total_path
-      shortest_walk.append((dist_s, predecessor_s))
+      shortest_walk.append((dist_s, predecessor_s, name_edges_s))
 
     # shortest path between last node in the sequence and ending node
-    dist_last, predecessor_last = Dijkstra(Nauthors_graph, sequence_authors[-1], node_last)
-    shortest_walk.append((dist_last, predecessor_last))
+    dist_last, predecessor_last, name_edges_last= Dijkstra(Nauthors_graph, sequence_authors[-1], node_last)
+    shortest_walk.append((dist_last, predecessor_last, name_edges_last))
 
     weight = [i[0] for i in shortest_walk]
 
     total_shortest_walk = 0
     path = []
+    edges_name = []
 
-    for (i,j) in shortest_walk:
+    for (i,j,k) in shortest_walk:
         total_shortest_walk = i + total_shortest_walk
         path.append(j)
+        edges_name.append(k)
+
+    pairs = [(path[i], path[i + 1]) for i in range(len(path) - 1)]
+    edges_name = edges_name[1:]
+
+    paper_cross = []
+    for i, pair in enumerate(pairs):
+        data = {
+            'edge': pair,
+            'paper': edges_name[i % len(edges_name)][0][0]  # Utilizzando l'operatore modulo per ciclare attraverso la lista di papers
+        }
+        paper_cross.append(data)
 
     if float('inf') in weight:
         return 'It is not possible to calculate a path'
     else:
-        return total_shortest_walk, path
+        return total_shortest_walk, paper_cross
