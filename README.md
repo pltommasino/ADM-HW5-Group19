@@ -42,3 +42,6 @@ In this part, the following 3 command line questions are answered using the AWS 
 
 
 ### 5. Algorithmic Questions (AQ)
+
+In the final part of the homework it's provided an algorithmic code for the resolution of the problem requested in the part A and a heuristic demostration of the point in the part B
+
