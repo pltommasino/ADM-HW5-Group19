@@ -30,4 +30,10 @@ In `funct/` path, we create five files (`functionality1.py`, `functionality2.py`
 
 ### 4. Command Line Question (CLQ)
 
+In this part, the following 3 command line questions are answered using the AWS CloudShell;
+
+1)Is there any node that acts as an important "connector" between the different parts of the graph?
+2)How does the degree of citation vary among the graph nodes?
+3)What is the average length of the shortest path among nodes?
+
 ### 5. Algorithmic Questions (AQ)
